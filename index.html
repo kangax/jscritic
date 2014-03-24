@@ -1,10 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Coming soon</title>
-  <style>body { font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif; }</style>
+  <title>JSCritic</title>
+  <link rel="stylesheet" type="text/css" href="assets/master.css">
 </head>
 <body>
-  <center><h1>Coming soon</h1></center>
+
+  <span class="by">
+    by <a href="http://twitter.com/kangax">@kangax</a>
+  </span>
+
+  <h1>
+    <span style="color: #0a0">JS</span><span style="color: red">Critic</span>
+  </h1>
+
+  <p class="headline">
+    Quickly check how well 3rd party script behaves.
+    Uses <a href="http://jshint.com">JSHint</a>.
+  </p>
+
+  <div>
+    <div class="column">
+      <textarea id="code"></textarea>
+    </div><!--
+    --><div class="column tests">
+
+      <div class="test">
+        <label>Does it <b>browser sniff</b>?</label>
+        <span class="result" id="browser-sniff"></span>
+        <p class="info" style="display: none" id="browser-sniff-info"></p>
+      </div>
+
+      <div class="test">
+        <label>Does it <b>extend native objects</b>?</label>
+        <span class="result" id="extends-native"></span>
+        <p class="info" style="display: none" id="extends-native-info"></p>
+      </div>
+
+      <div class="test">
+        <label>Does it use <b>document.write</b>?</label>
+        <span class="result" id="document-write"></span>
+        <p class="info" style="display: none" id="document-write-info"></p>
+      </div>
+
+      <div class="test">
+        <label>Does it use <b>eval</b>?</label>
+        <span class="result" id="has-eval"></span>
+        <p class="info" style="display: none" id="has-eval-info"></p>
+      </div>
+
+      <div class="test">
+        <label>Does it use <b>ES6 features</b>?</label>
+        <span class="result" id="es6-features"></span>
+        <p class="info" style="display: none" id="es6-features-info"></p>
+      </div>
+
+      <div class="test">
+        <label>Does it use <b>Mozilla-only</b> features?</label>
+        <span class="result" id="mozilla-features"></span>
+        <p class="info" style="display: none" id="mozilla-features-info"></p>
+      </div>
+
+      <div class="test">
+        <label>Does it have <b>IE</b> incompatibilities?</label>
+        <span class="result" id="ie-incompat"></span>
+        <p class="info" style="display: none" id="ie-incompat-info"></p>
+      </div>
+
+      <div class="test">
+        <label>How many <b>global variables</b>?</label>
+        <span class="result" id="global-vars"></span>
+        <p class="info" id="global-vars-info" style="display: none"></p>
+      </div>
+
+      <div class="test">
+        <label>How many <b>unused variables</b>?</label>
+        <span class="result" id="unused-vars"></span>
+        <p class="info" id="unused-vars-info" style="display: none"></p>
+      </div>
+
+      <div class="test size">
+        <label>Total size</label>
+        <span class="label"><span class="num" id="total-size"></span>KB</span>
+      </div>
+
+      <div class="test size">
+        <label>Minified size</label>
+        <span class="label"><span class="num" id="min-size"></span>KB</span>
+      </div>
+
+    </div>
+  </div>
+  <script src="assets/underscore.js"></script>
+  <script src="assets/jshint.js"></script>
+  <script src="assets/uglify.js"></script>
+  <script src="jscritic.js"></script>
+  <script src="assets/master.js"></script>
 </body>
 </html>

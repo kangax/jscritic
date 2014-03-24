@@ -1,0 +1,61 @@
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+body {
+  font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+  padding: 0;
+  margin: 10px;
+  color: #555;
+}
+.headline {
+  padding-bottom: 10px;
+  font-style: italic;
+}
+.by {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-style: italic;
+}
+#code {
+  width: 100%;
+  height: 455px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  color: #888;
+  font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+  background: #fafafa;
+}
+.column {
+  width: 50%;
+  display: inline-block;
+  vertical-align: top;
+}
+.tests {
+  padding-left: 20px;
+}
+.test {
+  margin-bottom: 10px;
+}
+label {
+  display: inline-block;
+  width: 75%;
+  border-bottom: 1px dotted #ccc;
+}
+.result {
+  font-size: 26px;
+  font-weight: bold;
+}
+.no { color: #0a0; }
+.yes { color: red; }
+.size .label { font-weight: normal; color: #aaa; font-size: 14px; }
+.size .label .num { font-weight: bold; color: #555; font-size: 20px; padding-right: 3px; }
+
+.info {
+  width: 75%;
+  font-size: 13px;
+  background: #eee;
+  padding: 10px;
+  margin-top: 0;
+  font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+}
