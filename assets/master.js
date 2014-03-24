@@ -47,10 +47,15 @@ document.getElementById('code').oninput = function() {
 
     if (infoPropertyName) {
 
-      infoEl.innerHTML = String(result[infoPropertyName] || '')
-        .replace(/&/g,'&amp;')
-        .replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;');
+      if (result[infoPropertyName] instanceof Array) {
+        infoEl.innerHTML = result[infoPropertyName].join(', ');
+      }
+      else {
+        infoEl.innerHTML = String(result[infoPropertyName] || '')
+          .replace(/&/g,'&amp;')
+          .replace(/</g,'&lt;')
+          .replace(/>/g,'&gt;');
+      }
 
       infoEl.style.display = (result[infoPropertyName] && String(result[infoPropertyName]))
         ? ''
