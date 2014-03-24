@@ -77,7 +77,10 @@ document.getElementById('code').oninput = function() {
 
   var el = document.getElementById('unused-vars');
   var infoEl = document.getElementById('unused-vars-info');
+
+  el.innerHTML = '';
   infoEl.innerHTML = '';
+  infoEl.style.display = 'none';
 
   if (result.unused && String(result.unused)) {
     el.innerHTML = result.unused.length;
