@@ -30,10 +30,10 @@
 // };
 // console.log (obj.latest); // Will return "test".
 
-// (function(){ var global = this; global.sneaky = 1; }).call(this);
-// (function(){ var global = this; global.sneaky2 = 1; })();
-// (function(){ this.sneaky3 = 1; })();
-// (function(){ self.sneaky4 = 1; })();
-// (function(){ window.sneaky5 = 1; })();
+(function(){ var global = this; global.sneaky = 1; }).call(this);
+(function(){ var global = this; global.sneaky2 = 1; })();
+(function(){ this.sneaky3 = 1; })();
+(function(){ self.sneaky4 = 1; })();
+(function(){ window.sneaky5 = 1; })();
 
 // for each (variable in {}) { statement }
