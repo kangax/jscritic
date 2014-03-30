@@ -13,15 +13,23 @@ body {
   padding: 0;
 }
 
-.headline {
+.header p {
   font-style: italic;
 }
 
-.by {
+.header .by {
   font-style: italic;
   position: absolute;
   right: 10px;
   top: 10px;
+}
+
+.header h1 > span {
+  color: #0a0;
+}
+
+.header h1 > span + span {
+  color: red;
 }
 
 #code {
@@ -36,13 +44,14 @@ body {
 }
 
 .column {
-  display: inline-block;
-  vertical-align: top;
+  display: block;
+  float: left;
   width: 50%;
 }
 
 .tests {
   padding-left: 20px;
+  float: right;
 }
 
 .test {

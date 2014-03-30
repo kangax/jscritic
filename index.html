@@ -7,69 +7,71 @@
 </head>
 <body>
 
-  <span class="by">
-    by <a href="https://twitter.com/kangax">@kangax</a>
-  </span>
+  <div class="header">
+    <span class="by">
+      by <a href="https://twitter.com/kangax">@kangax</a>
+    </span>
 
-  <h1>
-    <span style="color: #0a0">JS</span><span style="color: red">Critic</span>
-  </h1>
+    <h1>
+      <span>JS</span><span>Critic</span>
+    </h1>
 
-  <p class="headline">
-    Quickly check how well 3rd party script behaves.
-  </p>
-  <p class="headline">
-    Uses <a href="http://jshint.com/">JSHint</a>.
-    <b>Experimental</b>.
-    Please file bugs/suggestions on <a href="https://github.com/kangax/jscritic">Github</a>.
-  </p>
+    <p>
+      Quickly check how well 3rd party script behaves.
+    </p>
+    <p>
+      Uses <a href="http://jshint.com/">JSHint</a>.
+      <b>Experimental</b>.
+      Please file bugs/suggestions on <a href="https://github.com/kangax/jscritic">Github</a>.
+    </p>
+  </div>
 
   <div>
     <div class="column">
       <textarea id="code" placeholder="code goes here..."></textarea>
-    </div><!--
-    --><div class="column tests">
+    </div>
+    <div class="column tests">
 
       <div class="test">
         <label>Does it <b>browser sniff</b>?</label>
         <span class="result" id="browser-sniff"></span>
-        <p class="info" style="display: none" id="browser-sniff-info"></p>
+        <p class="info" id="browser-sniff-info" style="display: none"></p>
       </div>
 
       <div class="test">
         <label>Does it <b>extend native objects</b>?</label>
         <span class="result" id="extends-native"></span>
-        <p class="info" style="display: none" id="extends-native-info"></p>
+        <p class="info" id="extends-native-info" style="display: none"></p>
       </div>
 
       <div class="test">
         <label>Does it use <b>document.write</b>?</label>
         <span class="result" id="document-write"></span>
-        <p class="info" style="display: none" id="document-write-info"></p>
+        <p class="info" id="document-write-info" style="display: none"></p>
       </div>
 
       <div class="test">
         <label>Does it use <b>eval</b>?</label>
         <span class="result" id="has-eval"></span>
-        <p class="info" style="display: none" id="has-eval-info"></p>
+        <p class="info" id="has-eval-info" style="display: none"></p>
       </div>
 
       <div class="test">
         <label>Does it use <b>ES6 features</b>?</label>
         <span class="result" id="es6-features"></span>
-        <p class="info" style="display: none" id="es6-features-info"></p>
+        <p class="info" id="es6-features-info" style="display: none"></p>
       </div>
 
       <div class="test">
         <label>Does it use <b>Mozilla-only</b> features?</label>
         <span class="result" id="mozilla-features"></span>
-        <p class="info" style="display: none" id="mozilla-features-info"></p>
+        <p class="info" id="mozilla-features-info" style="display: none"></p>
       </div>
 
       <div class="test">
         <label>Does it have <b>IE</b> incompatibilities?</label>
         <span class="result" id="ie-incompat"></span>
-        <p class="info" style="display: none" id="ie-incompat-info"></p>
+        <p class="info" id="ie-incompat-info" style="display: none"></p>
       </div>
 
       <div class="test">
