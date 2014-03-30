@@ -491,7 +491,7 @@ function jscritic(content) {
       ? ('(' + jscriticResult.realGlobals.join(', ') + ')')
       : '');
 
-  jscriticResult.unused = _.unique((result.unused || []).map(function(o){ return o.name }));
+  jscriticResult.unused = _.unique((result.unused || []).map(function(o){ return o.name; }));
 
   console.log('\n- How many unused variables?\t\t',
     jscriticResult.unused.length,
