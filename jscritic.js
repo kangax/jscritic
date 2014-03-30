@@ -3,6 +3,7 @@ if (typeof require === 'function' && typeof process !== 'undefined') {
 }
 
 function jscritic(content) {
+  'use strict';
 
   var globalVarsToIgnore = [
     'NaN',
