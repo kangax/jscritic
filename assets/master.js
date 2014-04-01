@@ -7,12 +7,12 @@ document.getElementById('code').oninput = function() {
       el.innerHTML = '';
     });
 
-    var els = document.getElementsByClassName('num');
+    els = document.getElementsByClassName('num');
     _.each(els, function(el) {
       el.innerHTML = '';
     });
 
-    var els = document.getElementsByClassName('info');
+    els = document.getElementsByClassName('info');
     _.each(els, function(el) {
       el.style.display = 'none';
     });
@@ -80,8 +80,8 @@ document.getElementById('code').oninput = function() {
     infoEl.style.display = (result.realGlobals && String(result.realGlobals)) ? '' : 'none';
   }
 
-  var el = document.getElementById('unused-vars');
-  var infoEl = document.getElementById('unused-vars-info');
+  el = document.getElementById('unused-vars');
+  infoEl = document.getElementById('unused-vars-info');
 
   el.innerHTML = '';
   infoEl.innerHTML = '';
@@ -94,7 +94,7 @@ document.getElementById('code').oninput = function() {
     infoEl.style.display = '';
   }
 
-  var el = document.getElementById('total-size');
+  el = document.getElementById('total-size');
   el.innerHTML = (this.value.length / 1024).toFixed(2);
 
   function uglify(text) {
@@ -115,7 +115,7 @@ document.getElementById('code').oninput = function() {
   }
 
 
-  var el = document.getElementById('min-size');
+  el = document.getElementById('min-size');
   el.innerHTML = '';
   try {
     el.innerHTML = (uglify(this.value).length / 1024).toFixed(2);

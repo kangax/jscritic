@@ -3,359 +3,360 @@ if (typeof require === 'function' && typeof process !== 'undefined') {
 }
 
 function jscritic(content) {
+  'use strict';
 
   var globalVarsToIgnore = [
-    'NaN',
-    'Array'             ,
-    'Boolean'           ,
-    'Date'              ,
-    'decodeURI'         ,
-    'decodeURIComponent',
-    'encodeURI'         ,
-    'encodeURIComponent',
-    'Error'             ,
-    'eval'              ,
-    'EvalError'         ,
-    'Function'          ,
-    'hasOwnProperty'    ,
-    'isFinite'          ,
-    'isNaN'             ,
-    'JSON'              ,
-    'Math'              ,
-    'Map'               ,
-    'Number'            ,
-    'Object'            ,
-    'parseInt'          ,
-    'parseFloat'        ,
-    'RangeError'        ,
-    'ReferenceError'    ,
-    'RegExp'            ,
-    'Set'               ,
-    'String'            ,
-    'SyntaxError'       ,
-    'TypeError'         ,
-    'URIError'          ,
-    'WeakMap'           ,
+      'Array'
+    , 'Boolean'
+    , 'Date'
+    , 'decodeURI'
+    , 'decodeURIComponent'
+    , 'encodeURI'
+    , 'encodeURIComponent'
+    , 'Error'
+    , 'eval'
+    , 'EvalError'
+    , 'Function'
+    , 'hasOwnProperty'
+    , 'isFinite'
+    , 'isNaN'
+    , 'JSON'
+    , 'Map'
+    , 'Math'
+    , 'NaN'
+    , 'Number'
+    , 'Object'
+    , 'parseFloat'
+    , 'parseInt'
+    , 'RangeError'
+    , 'ReferenceError'
+    , 'RegExp'
+    , 'Set'
+    , 'String'
+    , 'SyntaxError'
+    , 'TypeError'
+    , 'URIError'
+    , 'WeakMap'
 
-    'Audio'                ,
-    'Blob'                 ,
-    'addEventListener'     ,
-    'applicationCache'     ,
-    'atob'                 ,
-    'blur'                 ,
-    'btoa'                 ,
-    'CanvasGradient'       ,
-    'CanvasPattern'        ,
-    'CanvasRenderingContext2D',
-    'clearInterval'        ,
-    'clearTimeout'         ,
-    'close'                ,
-    'closed'               ,
-    'CustomEvent'          ,
-    'DOMParser'            ,
-    'defaultStatus'        ,
-    'document'             ,
-    'Element'              ,
-    'ElementTimeControl'   ,
-    'event'                ,
-    'FileReader'           ,
-    'FormData'             ,
-    'focus'                ,
-    'frames'               ,
-    'getComputedStyle'     ,
-    'HTMLElement'          ,
-    'HTMLAnchorElement'    ,
-    'HTMLBaseElement'      ,
-    'HTMLBlockquoteElement',
-    'HTMLBodyElement'      ,
-    'HTMLBRElement'        ,
-    'HTMLButtonElement'    ,
-    'HTMLCanvasElement'    ,
-    'HTMLDirectoryElement' ,
-    'HTMLDivElement'       ,
-    'HTMLDListElement'     ,
-    'HTMLFieldSetElement'  ,
-    'HTMLFontElement'      ,
-    'HTMLFormElement'      ,
-    'HTMLFrameElement'     ,
-    'HTMLFrameSetElement'  ,
-    'HTMLHeadElement'      ,
-    'HTMLHeadingElement'   ,
-    'HTMLHRElement'        ,
-    'HTMLHtmlElement'      ,
-    'HTMLIFrameElement'    ,
-    'HTMLImageElement'     ,
-    'HTMLInputElement'     ,
-    'HTMLIsIndexElement'   ,
-    'HTMLLabelElement'     ,
-    'HTMLLayerElement'     ,
-    'HTMLLegendElement'    ,
-    'HTMLLIElement'        ,
-    'HTMLLinkElement'      ,
-    'HTMLMapElement'       ,
-    'HTMLMenuElement'      ,
-    'HTMLMetaElement'      ,
-    'HTMLModElement'       ,
-    'HTMLObjectElement'    ,
-    'HTMLOListElement'     ,
-    'HTMLOptGroupElement'  ,
-    'HTMLOptionElement'    ,
-    'HTMLParagraphElement' ,
-    'HTMLParamElement'     ,
-    'HTMLPreElement'       ,
-    'HTMLQuoteElement'     ,
-    'HTMLScriptElement'    ,
-    'HTMLSelectElement'    ,
-    'HTMLStyleElement'     ,
-    'HTMLTableCaptionElement',
-    'HTMLTableCellElement' ,
-    'HTMLTableColElement'  ,
-    'HTMLTableElement'     ,
-    'HTMLTableRowElement'  ,
-    'HTMLTableSectionElement',
-    'HTMLTextAreaElement'  ,
-    'HTMLTitleElement'     ,
-    'HTMLUListElement'     ,
-    'HTMLVideoElement'     ,
-    'history'              ,
-    'Image'                ,
-    'length'               ,
-    'localStorage'         ,
-    'location'             ,
-    'matchMedia'           ,
-    'MessageChannel'       ,
-    'MessageEvent'         ,
-    'MessagePort'          ,
-    'MouseEvent'           ,
-    'moveBy'               ,
-    'moveTo'               ,
-    'MutationObserver'     ,
-    'name'                 ,
-    'Node'                 ,
-    'NodeFilter'           ,
-    'navigator'            ,
-    'onbeforeunload'       ,
-    'onblur'               ,
-    'onerror'              ,
-    'onfocus'              ,
-    'onload'               ,
-    'onresize'             ,
-    'onunload'             ,
-    'open'                 ,
-    'openDatabase'         ,
-    'opener'               ,
-    'Option'               ,
-    'parent'               ,
-    'print'                ,
-    'removeEventListener'  ,
-    'resizeBy'             ,
-    'resizeTo'             ,
-    'screen'               ,
-    'scroll'               ,
-    'scrollBy'             ,
-    'scrollTo'             ,
-    'sessionStorage'       ,
-    'setInterval'          ,
-    'setTimeout'           ,
-    'SharedWorker'         ,
-    'status'               ,
-    'SVGAElement'          ,
-    'SVGAltGlyphDefElement',
-    'SVGAltGlyphElement'   ,
-    'SVGAltGlyphItemElement',
-    'SVGAngle'             ,
-    'SVGAnimateColorElement',
-    'SVGAnimateElement'    ,
-    'SVGAnimateMotionElement',
-    'SVGAnimateTransformElement',
-    'SVGAnimatedAngle'     ,
-    'SVGAnimatedBoolean'   ,
-    'SVGAnimatedEnumeration',
-    'SVGAnimatedInteger'   ,
-    'SVGAnimatedLength'    ,
-    'SVGAnimatedLengthList',
-    'SVGAnimatedNumber'    ,
-    'SVGAnimatedNumberList',
-    'SVGAnimatedPathData'  ,
-    'SVGAnimatedPoints'    ,
-    'SVGAnimatedPreserveAspectRatio',
-    'SVGAnimatedRect'      ,
-    'SVGAnimatedString'    ,
-    'SVGAnimatedTransformList',
-    'SVGAnimationElement'  ,
-    'SVGCSSRule'           ,
-    'SVGCircleElement'     ,
-    'SVGClipPathElement'   ,
-    'SVGColor'             ,
-    'SVGColorProfileElement',
-    'SVGColorProfileRule'  ,
-    'SVGComponentTransferFunctionElement',
-    'SVGCursorElement'     ,
-    'SVGDefsElement'       ,
-    'SVGDescElement'       ,
-    'SVGDocument'          ,
-    'SVGElement'           ,
-    'SVGElementInstance'   ,
-    'SVGElementInstanceList',
-    'SVGEllipseElement'    ,
-    'SVGExternalResourcesRequired',
-    'SVGFEBlendElement'    ,
-    'SVGFEColorMatrixElement',
-    'SVGFEComponentTransferElement',
-    'SVGFECompositeElement',
-    'SVGFEConvolveMatrixElement',
-    'SVGFEDiffuseLightingElement',
-    'SVGFEDisplacementMapElement',
-    'SVGFEDistantLightElement',
-    'SVGFEFloodElement'    ,
-    'SVGFEFuncAElement'    ,
-    'SVGFEFuncBElement'    ,
-    'SVGFEFuncGElement'    ,
-    'SVGFEFuncRElement'    ,
-    'SVGFEGaussianBlurElement',
-    'SVGFEImageElement'    ,
-    'SVGFEMergeElement'    ,
-    'SVGFEMergeNodeElement',
-    'SVGFEMorphologyElement',
-    'SVGFEOffsetElement'   ,
-    'SVGFEPointLightElement',
-    'SVGFESpecularLightingElement',
-    'SVGFESpotLightElement',
-    'SVGFETileElement'     ,
-    'SVGFETurbulenceElement',
-    'SVGFilterElement'     ,
-    'SVGFilterPrimitiveStandardAttributes',
-    'SVGFitToViewBox'      ,
-    'SVGFontElement'       ,
-    'SVGFontFaceElement'   ,
-    'SVGFontFaceFormatElement',
-    'SVGFontFaceNameElement',
-    'SVGFontFaceSrcElement',
-    'SVGFontFaceUriElement',
-    'SVGForeignObjectElement',
-    'SVGGElement'          ,
-    'SVGGlyphElement'      ,
-    'SVGGlyphRefElement'   ,
-    'SVGGradientElement'   ,
-    'SVGHKernElement'      ,
-    'SVGICCColor'          ,
-    'SVGImageElement'      ,
-    'SVGLangSpace'         ,
-    'SVGLength'            ,
-    'SVGLengthList'        ,
-    'SVGLineElement'       ,
-    'SVGLinearGradientElement',
-    'SVGLocatable'         ,
-    'SVGMPathElement'      ,
-    'SVGMarkerElement'     ,
-    'SVGMaskElement'       ,
-    'SVGMatrix'            ,
-    'SVGMetadataElement'   ,
-    'SVGMissingGlyphElement',
-    'SVGNumber'            ,
-    'SVGNumberList'        ,
-    'SVGPaint'             ,
-    'SVGPathElement'       ,
-    'SVGPathSeg'           ,
-    'SVGPathSegArcAbs'     ,
-    'SVGPathSegArcRel'     ,
-    'SVGPathSegClosePath'  ,
-    'SVGPathSegCurvetoCubicAbs',
-    'SVGPathSegCurvetoCubicRel',
-    'SVGPathSegCurvetoCubicSmoothAbs',
-    'SVGPathSegCurvetoCubicSmoothRel',
-    'SVGPathSegCurvetoQuadraticAbs',
-    'SVGPathSegCurvetoQuadraticRel',
-    'SVGPathSegCurvetoQuadraticSmoothAbs',
-    'SVGPathSegCurvetoQuadraticSmoothRel',
-    'SVGPathSegLinetoAbs'  ,
-    'SVGPathSegLinetoHorizontalAbs',
-    'SVGPathSegLinetoHorizontalRel',
-    'SVGPathSegLinetoRel'  ,
-    'SVGPathSegLinetoVerticalAbs',
-    'SVGPathSegLinetoVerticalRel',
-    'SVGPathSegList'       ,
-    'SVGPathSegMovetoAbs'  ,
-    'SVGPathSegMovetoRel'  ,
-    'SVGPatternElement'    ,
-    'SVGPoint'             ,
-    'SVGPointList'         ,
-    'SVGPolygonElement'    ,
-    'SVGPolylineElement'   ,
-    'SVGPreserveAspectRatio',
-    'SVGRadialGradientElement',
-    'SVGRect'              ,
-    'SVGRectElement'       ,
-    'SVGRenderingIntent'   ,
-    'SVGSVGElement'        ,
-    'SVGScriptElement'     ,
-    'SVGSetElement'        ,
-    'SVGStopElement'       ,
-    'SVGStringList'        ,
-    'SVGStylable'          ,
-    'SVGStyleElement'      ,
-    'SVGSwitchElement'     ,
-    'SVGSymbolElement'     ,
-    'SVGTRefElement'       ,
-    'SVGTSpanElement'      ,
-    'SVGTests'             ,
-    'SVGTextContentElement',
-    'SVGTextElement'       ,
-    'SVGTextPathElement'   ,
-    'SVGTextPositioningElement',
-    'SVGTitleElement'      ,
-    'SVGTransform'         ,
-    'SVGTransformList'     ,
-    'SVGTransformable'     ,
-    'SVGURIReference'      ,
-    'SVGUnitTypes'         ,
-    'SVGUseElement'        ,
-    'SVGVKernElement'      ,
-    'SVGViewElement'       ,
-    'SVGViewSpec'          ,
-    'SVGZoomAndPan'        ,
-    'TimeEvent'            ,
-    'top'                  ,
-    'URL'                  ,
-    'WebSocket'            ,
-    'window'               ,
-    'Worker'               ,
-    'XMLHttpRequest'       ,
-    'XMLSerializer'        ,
-    'XPathEvaluator'       ,
-    'XPathException'       ,
-    'XPathExpression'      ,
-    'XPathNamespace'       ,
-    'XPathNSResolver'      ,
-    'XPathResult',
+    , 'addEventListener'
+    , 'applicationCache'
+    , 'atob'
+    , 'Audio'
+    , 'Blob'
+    , 'blur'
+    , 'btoa'
+    , 'CanvasGradient'
+    , 'CanvasPattern'
+    , 'CanvasRenderingContext2D'
+    , 'clearInterval'
+    , 'clearTimeout'
+    , 'close'
+    , 'closed'
+    , 'CustomEvent'
+    , 'defaultStatus'
+    , 'document'
+    , 'DOMParser'
+    , 'Element'
+    , 'ElementTimeControl'
+    , 'event'
+    , 'FileReader'
+    , 'focus'
+    , 'FormData'
+    , 'frames'
+    , 'getComputedStyle'
+    , 'history'
+    , 'HTMLAnchorElement'
+    , 'HTMLBaseElement'
+    , 'HTMLBlockquoteElement'
+    , 'HTMLBodyElement'
+    , 'HTMLBRElement'
+    , 'HTMLButtonElement'
+    , 'HTMLCanvasElement'
+    , 'HTMLDirectoryElement'
+    , 'HTMLDivElement'
+    , 'HTMLDListElement'
+    , 'HTMLElement'
+    , 'HTMLFieldSetElement'
+    , 'HTMLFontElement'
+    , 'HTMLFormElement'
+    , 'HTMLFrameElement'
+    , 'HTMLFrameSetElement'
+    , 'HTMLHeadElement'
+    , 'HTMLHeadingElement'
+    , 'HTMLHRElement'
+    , 'HTMLHtmlElement'
+    , 'HTMLIFrameElement'
+    , 'HTMLImageElement'
+    , 'HTMLInputElement'
+    , 'HTMLIsIndexElement'
+    , 'HTMLLabelElement'
+    , 'HTMLLayerElement'
+    , 'HTMLLegendElement'
+    , 'HTMLLIElement'
+    , 'HTMLLinkElement'
+    , 'HTMLMapElement'
+    , 'HTMLMenuElement'
+    , 'HTMLMetaElement'
+    , 'HTMLModElement'
+    , 'HTMLObjectElement'
+    , 'HTMLOListElement'
+    , 'HTMLOptGroupElement'
+    , 'HTMLOptionElement'
+    , 'HTMLParagraphElement'
+    , 'HTMLParamElement'
+    , 'HTMLPreElement'
+    , 'HTMLQuoteElement'
+    , 'HTMLScriptElement'
+    , 'HTMLSelectElement'
+    , 'HTMLStyleElement'
+    , 'HTMLTableCaptionElement'
+    , 'HTMLTableCellElement'
+    , 'HTMLTableColElement'
+    , 'HTMLTableElement'
+    , 'HTMLTableRowElement'
+    , 'HTMLTableSectionElement'
+    , 'HTMLTextAreaElement'
+    , 'HTMLTitleElement'
+    , 'HTMLUListElement'
+    , 'HTMLVideoElement'
+    , 'Image'
+    , 'length'
+    , 'localStorage'
+    , 'location'
+    , 'matchMedia'
+    , 'MessageChannel'
+    , 'MessageEvent'
+    , 'MessagePort'
+    , 'MouseEvent'
+    , 'moveBy'
+    , 'moveTo'
+    , 'MutationObserver'
+    , 'name'
+    , 'navigator'
+    , 'Node'
+    , 'NodeFilter'
+    , 'onbeforeunload'
+    , 'onblur'
+    , 'onerror'
+    , 'onfocus'
+    , 'onload'
+    , 'onresize'
+    , 'onunload'
+    , 'open'
+    , 'openDatabase'
+    , 'opener'
+    , 'Option'
+    , 'parent'
+    , 'print'
+    , 'removeEventListener'
+    , 'resizeBy'
+    , 'resizeTo'
+    , 'screen'
+    , 'scroll'
+    , 'scrollBy'
+    , 'scrollTo'
+    , 'sessionStorage'
+    , 'setInterval'
+    , 'setTimeout'
+    , 'SharedWorker'
+    , 'status'
+    , 'SVGAElement'
+    , 'SVGAltGlyphDefElement'
+    , 'SVGAltGlyphElement'
+    , 'SVGAltGlyphItemElement'
+    , 'SVGAngle'
+    , 'SVGAnimateColorElement'
+    , 'SVGAnimatedAngle'
+    , 'SVGAnimatedBoolean'
+    , 'SVGAnimatedEnumeration'
+    , 'SVGAnimatedInteger'
+    , 'SVGAnimatedLength'
+    , 'SVGAnimatedLengthList'
+    , 'SVGAnimatedNumber'
+    , 'SVGAnimatedNumberList'
+    , 'SVGAnimatedPathData'
+    , 'SVGAnimatedPoints'
+    , 'SVGAnimatedPreserveAspectRatio'
+    , 'SVGAnimatedRect'
+    , 'SVGAnimatedString'
+    , 'SVGAnimatedTransformList'
+    , 'SVGAnimateElement'
+    , 'SVGAnimateMotionElement'
+    , 'SVGAnimateTransformElement'
+    , 'SVGAnimationElement'
+    , 'SVGCircleElement'
+    , 'SVGClipPathElement'
+    , 'SVGColor'
+    , 'SVGColorProfileElement'
+    , 'SVGColorProfileRule'
+    , 'SVGComponentTransferFunctionElement'
+    , 'SVGCSSRule'
+    , 'SVGCursorElement'
+    , 'SVGDefsElement'
+    , 'SVGDescElement'
+    , 'SVGDocument'
+    , 'SVGElement'
+    , 'SVGElementInstance'
+    , 'SVGElementInstanceList'
+    , 'SVGEllipseElement'
+    , 'SVGExternalResourcesRequired'
+    , 'SVGFEBlendElement'
+    , 'SVGFEColorMatrixElement'
+    , 'SVGFEComponentTransferElement'
+    , 'SVGFECompositeElement'
+    , 'SVGFEConvolveMatrixElement'
+    , 'SVGFEDiffuseLightingElement'
+    , 'SVGFEDisplacementMapElement'
+    , 'SVGFEDistantLightElement'
+    , 'SVGFEFloodElement'
+    , 'SVGFEFuncAElement'
+    , 'SVGFEFuncBElement'
+    , 'SVGFEFuncGElement'
+    , 'SVGFEFuncRElement'
+    , 'SVGFEGaussianBlurElement'
+    , 'SVGFEImageElement'
+    , 'SVGFEMergeElement'
+    , 'SVGFEMergeNodeElement'
+    , 'SVGFEMorphologyElement'
+    , 'SVGFEOffsetElement'
+    , 'SVGFEPointLightElement'
+    , 'SVGFESpecularLightingElement'
+    , 'SVGFESpotLightElement'
+    , 'SVGFETileElement'
+    , 'SVGFETurbulenceElement'
+    , 'SVGFilterElement'
+    , 'SVGFilterPrimitiveStandardAttributes'
+    , 'SVGFitToViewBox'
+    , 'SVGFontElement'
+    , 'SVGFontFaceElement'
+    , 'SVGFontFaceFormatElement'
+    , 'SVGFontFaceNameElement'
+    , 'SVGFontFaceSrcElement'
+    , 'SVGFontFaceUriElement'
+    , 'SVGForeignObjectElement'
+    , 'SVGGElement'
+    , 'SVGGlyphElement'
+    , 'SVGGlyphRefElement'
+    , 'SVGGradientElement'
+    , 'SVGHKernElement'
+    , 'SVGICCColor'
+    , 'SVGImageElement'
+    , 'SVGLangSpace'
+    , 'SVGLength'
+    , 'SVGLengthList'
+    , 'SVGLinearGradientElement'
+    , 'SVGLineElement'
+    , 'SVGLocatable'
+    , 'SVGMarkerElement'
+    , 'SVGMaskElement'
+    , 'SVGMatrix'
+    , 'SVGMetadataElement'
+    , 'SVGMissingGlyphElement'
+    , 'SVGMPathElement'
+    , 'SVGNumber'
+    , 'SVGNumberList'
+    , 'SVGPaint'
+    , 'SVGPathElement'
+    , 'SVGPathSeg'
+    , 'SVGPathSegArcAbs'
+    , 'SVGPathSegArcRel'
+    , 'SVGPathSegClosePath'
+    , 'SVGPathSegCurvetoCubicAbs'
+    , 'SVGPathSegCurvetoCubicRel'
+    , 'SVGPathSegCurvetoCubicSmoothAbs'
+    , 'SVGPathSegCurvetoCubicSmoothRel'
+    , 'SVGPathSegCurvetoQuadraticAbs'
+    , 'SVGPathSegCurvetoQuadraticRel'
+    , 'SVGPathSegCurvetoQuadraticSmoothAbs'
+    , 'SVGPathSegCurvetoQuadraticSmoothRel'
+    , 'SVGPathSegLinetoAbs'
+    , 'SVGPathSegLinetoHorizontalAbs'
+    , 'SVGPathSegLinetoHorizontalRel'
+    , 'SVGPathSegLinetoRel'
+    , 'SVGPathSegLinetoVerticalAbs'
+    , 'SVGPathSegLinetoVerticalRel'
+    , 'SVGPathSegList'
+    , 'SVGPathSegMovetoAbs'
+    , 'SVGPathSegMovetoRel'
+    , 'SVGPatternElement'
+    , 'SVGPoint'
+    , 'SVGPointList'
+    , 'SVGPolygonElement'
+    , 'SVGPolylineElement'
+    , 'SVGPreserveAspectRatio'
+    , 'SVGRadialGradientElement'
+    , 'SVGRect'
+    , 'SVGRectElement'
+    , 'SVGRenderingIntent'
+    , 'SVGScriptElement'
+    , 'SVGSetElement'
+    , 'SVGStopElement'
+    , 'SVGStringList'
+    , 'SVGStylable'
+    , 'SVGStyleElement'
+    , 'SVGSVGElement'
+    , 'SVGSwitchElement'
+    , 'SVGSymbolElement'
+    , 'SVGTests'
+    , 'SVGTextContentElement'
+    , 'SVGTextElement'
+    , 'SVGTextPathElement'
+    , 'SVGTextPositioningElement'
+    , 'SVGTitleElement'
+    , 'SVGTransform'
+    , 'SVGTransformable'
+    , 'SVGTransformList'
+    , 'SVGTRefElement'
+    , 'SVGTSpanElement'
+    , 'SVGUnitTypes'
+    , 'SVGURIReference'
+    , 'SVGUseElement'
+    , 'SVGViewElement'
+    , 'SVGViewSpec'
+    , 'SVGVKernElement'
+    , 'SVGZoomAndPan'
+    , 'TimeEvent'
+    , 'top'
+    , 'URL'
+    , 'WebSocket'
+    , 'window'
+    , 'Worker'
+    , 'XMLHttpRequest'
+    , 'XMLSerializer'
+    , 'XPathEvaluator'
+    , 'XPathException'
+    , 'XPathExpression'
+    , 'XPathNamespace'
+    , 'XPathNSResolver'
+    , 'XPathResult'
 
-    'escape',
-    'unescape',
+    , 'escape'
+    , 'unescape'
 
     // added on top of JSHint
-    'Int8Array',
-    'Int16Array',
-    'Int32Array',
+    , 'Int8Array'
+    , 'Int16Array'
+    , 'Int32Array'
 
-    'Uint8Array',
-    'Uint16Array',
-    'Uint32Array',
-    'Uint8ClampedArray',
+    , 'Uint8Array'
+    , 'Uint16Array'
+    , 'Uint32Array'
+    , 'Uint8ClampedArray'
 
-    'Float32Array',
-    'Float64Array',
+    , 'Float32Array'
+    , 'Float64Array'
 
-    'ArrayBuffer',
+    , 'ArrayBuffer'
 
-    'self',
-    'console',
-    'ActiveXObject',
-    'exports',
-    'module',
-    'require',
-    'define',
-    'performance'          ,
-    'requestAnimationFrame'
+    , 'ActiveXObject'
+    , 'console'
+    , 'define'
+    , 'exports'
+    , 'module'
+    , 'performance'
+    , 'requestAnimationFrame'
+    , 'require'
+    , 'self'
   ];
 
   var JSHINT = typeof require === 'function' ? require('jshint').JSHINT : window.JSHINT,
@@ -363,11 +364,11 @@ function jscritic(content) {
       _ = typeof require === 'function' ? require('underscore') : window._;
 
   JSHINT(content, {
-    freeze: true,
-    undef: true,
     browser: true,
     es3: true,
-    maxerr: 10000
+    freeze: true,
+    maxerr: 10000,
+    undef: true
   });
 
   var result = JSHINT.data();
@@ -491,7 +492,7 @@ function jscritic(content) {
       ? ('(' + jscriticResult.realGlobals.join(', ') + ')')
       : '');
 
-  jscriticResult.unused = _.unique((result.unused || []).map(function(o){ return o.name }));
+  jscriticResult.unused = _.unique((result.unused || []).map(function(o){ return o.name; }));
 
   console.log('\n- How many unused variables?\t\t',
     jscriticResult.unused.length,

@@ -1,0 +1,4 @@
+exclude:
+- "CNAME"
+- "README.md"
+- "tests"
