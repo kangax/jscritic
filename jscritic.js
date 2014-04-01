@@ -368,7 +368,8 @@ function jscritic(content) {
     es3: true,
     freeze: true,
     maxerr: 10000,
-    undef: true
+    undef: true,
+    funcscope: true
   });
 
   var result = JSHINT.data();
