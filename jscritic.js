@@ -420,13 +420,13 @@ function jscritic(content) {
     jscriticResult.hasDocumentWrite ? 'Yep'  : 'Nope');
 
   (result.errors || []).forEach(function(e) {
-    if (e.code === 'W061') {
+    if (e.code === 'W061' || e.code === 'W054') {
       jscriticResult.hasEval = true;
       jscriticResult.evalExcerpt = e.evidence;
     }
   });
 
-  console.log('\n- Does it use eval?\t\t\t',
+  console.log('\n- Does it use eval (or a form of it)?\t\t\t',
     jscriticResult.hasEval ? 'Yep' : 'Nope');
 
   console.log(jscriticResult.evalExcerpt);
