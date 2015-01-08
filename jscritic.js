@@ -1,7 +1,3 @@
-if (typeof require === 'function' && typeof process !== 'undefined') {
-  jscritic(require('fs').readFileSync(process.argv[2], 'utf-8'));
-}
-
 function jscritic(content) {
   'use strict';
 
@@ -408,7 +404,7 @@ function jscritic(content) {
 
   console.log('- Does it extend native objects?\t',
     jscriticResult.doesExtendNative
-      ? ('Yep (' + jscriticResult.extendedNatives + ')')
+      ? 'Yep (' + jscriticResult.extendedNatives + ')'
       : 'Nope');
 
   (result.errors || []).forEach(function(e) {
@@ -418,7 +414,7 @@ function jscritic(content) {
   });
 
   console.log('\n- Does it use `document.write`?\t\t',
-    jscriticResult.hasDocumentWrite ? 'Yep'  : 'Nope');
+    jscriticResult.hasDocumentWrite ? 'Yep' : 'Nope');
 
   (result.errors || []).forEach(function(e) {
     if (e.code === 'W061' || e.code === 'W054') {
@@ -470,7 +466,7 @@ function jscritic(content) {
 
   console.log('\n- Does it have IE incompatibilities?\t',
     jscriticResult.hasIEIncompat
-      ? ('Yep (' + jscriticResult.ieIncompats.join(', ') + ')')
+      ? 'Yep (' + jscriticResult.ieIncompats.join(', ') + ')'
       : 'Nope');
 
   var globals = _.difference(_.unique(result.globals || []), globalVarsToIgnore);
@@ -490,14 +486,14 @@ function jscritic(content) {
   console.log('\n- How many global variables?\t\t',
     jscriticResult.realGlobals.length,
     jscriticResult.realGlobals.length
-      ? ('(' + jscriticResult.realGlobals.join(', ') + ')')
+      ? '(' + jscriticResult.realGlobals.join(', ') + ')'
       : '');
 
-  jscriticResult.unused = _.unique((result.unused || []).map(function(o){ return o.name; }));
+  jscriticResult.unused = _.unique((result.unused || []).map(function(o) { return o.name; }));
 
   console.log('\n- How many unused variables?\t\t',
     jscriticResult.unused.length,
-    jscriticResult.unused.length ? ('(' + jscriticResult.unused.join(', ') + ')') : '');
+    jscriticResult.unused.length ? '(' + jscriticResult.unused.join(', ') + ')' : '');
 
   console.log('\nTotal size:\t\t\t\t',
     (content.length / 1024).toFixed(2) + 'KB');
@@ -509,11 +505,15 @@ function jscritic(content) {
 
   console.log('Minified size:\t\t\t\t',
     jscriticResult.minified
-      ? ((jscriticResult.minified.length / 1024).toFixed(2) + 'KB')
+      ? (jscriticResult.minified.length / 1024).toFixed(2) + 'KB'
       : 'Could not minify');
 
   console.log('\n');
 
   return jscriticResult;
 
+}
+
+if (typeof require === 'function' && typeof process !== 'undefined') {
+  jscritic(require('fs').readFileSync(process.argv[2], 'utf-8'));
 }
