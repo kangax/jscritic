@@ -1,4 +1,4 @@
-/* global jscritic, UglifyJS, _ */
+/* global jscritic, uglify, _ */
 
 document.getElementById('code').oninput = function() {
   'use strict';
@@ -97,24 +97,6 @@ document.getElementById('code').oninput = function() {
 
   el = document.getElementById('total-size');
   el.innerHTML = (this.value.length / 1024).toFixed(2);
-
-  function uglify(text) {
-    var ast = UglifyJS.parse(text);
-    ast.figure_out_scope();
-
-    var compressor = UglifyJS.Compressor();
-    var compressedAst = ast.transform(compressor);
-
-    compressedAst.figure_out_scope();
-    compressedAst.compute_char_frequency();
-    compressedAst.mangle_names();
-
-    var stream = UglifyJS.OutputStream();
-    compressedAst.print(stream);
-
-    return stream.toString();
-  }
-
 
   el = document.getElementById('min-size');
   el.innerHTML = '';
