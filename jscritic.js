@@ -1,6 +1,5 @@
-if (typeof require === 'function' && typeof process !== 'undefined') {
-  jscritic(require('fs').readFileSync(process.argv[2], 'utf-8'));
-}
+/* global UglifyJS */
+/* jshint laxbreak:true, laxcomma:true */
 
 function jscritic(content) {
   'use strict';
@@ -375,8 +374,6 @@ function jscritic(content) {
   var result = JSHINT.data();
   var jscriticResult = { };
 
-  console.log('\n');
-
   (result.globals || []).forEach(function(name) {
     if (name === 'navigator') {
       // pretty weak sauce but what can we do...
@@ -394,7 +391,9 @@ function jscritic(content) {
   console.log('- Does it browser sniff?\t\t',
     jscriticResult.hasBrowserSniff ? 'Yep' : 'Nope');
 
-  console.log(jscriticResult.browserSniffExcerpt || '');
+  if (jscriticResult.browserSniffExcerpt) {
+    console.log(jscriticResult.browserSniffExcerpt);
+  }
 
   jscriticResult.extendedNatives = [ ];
   (result.errors || []).forEach(function(e) {
@@ -408,7 +407,7 @@ function jscritic(content) {
 
   console.log('- Does it extend native objects?\t',
     jscriticResult.doesExtendNative
-      ? ('Yep (' + jscriticResult.extendedNatives + ')')
+      ? 'Yep (' + jscriticResult.extendedNatives + ')'
       : 'Nope');
 
   (result.errors || []).forEach(function(e) {
@@ -417,8 +416,8 @@ function jscritic(content) {
     }
   });
 
-  console.log('\n- Does it use `document.write`?\t\t',
-    jscriticResult.hasDocumentWrite ? 'Yep'  : 'Nope');
+  console.log('- Does it use `document.write`?\t',
+    jscriticResult.hasDocumentWrite ? 'Yep' : 'Nope');
 
   (result.errors || []).forEach(function(e) {
     if (e.code === 'W061' || e.code === 'W054') {
@@ -427,10 +426,12 @@ function jscritic(content) {
     }
   });
 
-  console.log('\n- Does it use eval (or a form of it)?\t\t\t',
+  console.log('- Does it use eval (or a form of it)?\t',
     jscriticResult.hasEval ? 'Yep' : 'Nope');
 
-  console.log(jscriticResult.evalExcerpt);
+  if (jscriticResult.evalExcerpt) {
+    console.log(jscriticResult.evalExcerpt);
+  }
 
   (result.errors || []).forEach(function(e) {
     if (e.code === 'W119') {
@@ -438,7 +439,7 @@ function jscritic(content) {
     }
   });
 
-  console.log('\n- Does it use ES6 features?\t\t',
+  console.log('- Does it use ES6 features?\t\t',
     jscriticResult.doesUseES6 ? 'Yep' : 'Nope');
 
   jscriticResult.mozillaOnlyFeatures = [ ];
@@ -452,7 +453,7 @@ function jscritic(content) {
 
   jscriticResult.mozillaOnlyFeatures = _.unique(jscriticResult.mozillaOnlyFeatures);
 
-  console.log('\n- Does it use Mozilla-only features?\t',
+  console.log('- Does it use Mozilla-only features?\t',
     jscriticResult.hasMozillaOnlyFeatures
       ? 'Yep (' + jscriticResult.mozillaOnlyFeatures.join(', ') + ')'
       : 'Nope');
@@ -468,9 +469,9 @@ function jscritic(content) {
 
   jscriticResult.ieIncompats = _.unique(jscriticResult.ieIncompats);
 
-  console.log('\n- Does it have IE incompatibilities?\t',
+  console.log('- Does it have IE incompatibilities?\t',
     jscriticResult.hasIEIncompat
-      ? ('Yep (' + jscriticResult.ieIncompats.join(', ') + ')')
+      ? 'Yep (' + jscriticResult.ieIncompats.join(', ') + ')'
       : 'Nope');
 
   var globals = _.difference(_.unique(result.globals || []), globalVarsToIgnore);
@@ -487,33 +488,49 @@ function jscritic(content) {
 
   jscriticResult.realGlobals = globals.concat(jscriticResult.realLeakedVars);
 
-  console.log('\n- How many global variables?\t\t',
+  console.log('- How many global variables?\t\t',
     jscriticResult.realGlobals.length,
     jscriticResult.realGlobals.length
-      ? ('(' + jscriticResult.realGlobals.join(', ') + ')')
+      ? '(' + jscriticResult.realGlobals.join(', ') + ')'
       : '');
 
-  jscriticResult.unused = _.unique((result.unused || []).map(function(o){ return o.name; }));
+  jscriticResult.unused = _.unique((result.unused || []).map(function(o) { return o.name; }));
 
-  console.log('\n- How many unused variables?\t\t',
+  console.log('- How many unused variables?\t\t',
     jscriticResult.unused.length,
-    jscriticResult.unused.length ? ('(' + jscriticResult.unused.join(', ') + ')') : '');
+    jscriticResult.unused.length ? '(' + jscriticResult.unused.join(', ') + ')' : '');
 
-  console.log('\nTotal size:\t\t\t\t',
+  console.log('Total size:\t\t\t\t',
     (content.length / 1024).toFixed(2) + 'KB');
 
-  try {
-    jscriticResult.minified = uglify.minify(content, { fromString: true }).code;
-  }
-  catch(err) { }
+  jscriticResult.minified = (uglify(content).length / 1024).toFixed(2);
 
   console.log('Minified size:\t\t\t\t',
     jscriticResult.minified
-      ? ((jscriticResult.minified.length / 1024).toFixed(2) + 'KB')
+      ? jscriticResult.minified + 'KB'
       : 'Could not minify');
-
-  console.log('\n');
 
   return jscriticResult;
 
+}
+
+function uglify(text) {
+  var ast = UglifyJS.parse(text);
+  ast.figure_out_scope();
+
+  var compressor = UglifyJS.Compressor();
+  var compressedAst = ast.transform(compressor);
+
+  compressedAst.figure_out_scope();
+  compressedAst.compute_char_frequency();
+  compressedAst.mangle_names();
+
+  var stream = UglifyJS.OutputStream();
+  compressedAst.print(stream);
+
+  return stream.toString();
+}
+
+if (typeof require === 'function' && typeof process !== 'undefined') {
+  jscritic(require('fs').readFileSync(process.argv[2], 'utf-8'));
 }

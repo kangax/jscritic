@@ -1,19 +1,22 @@
+/* global jscritic, uglify, _ */
+
 document.getElementById('code').oninput = function() {
+  'use strict';
 
   if (!this.value) {
 
-    var els = document.getElementsByClassName('result');
-    _.each(els, function(el) {
+    var elements = document.getElementsByClassName('result');
+    _.each(elements, function(el) {
       el.innerHTML = '';
     });
 
-    els = document.getElementsByClassName('num');
-    _.each(els, function(el) {
+    elements = document.getElementsByClassName('num');
+    _.each(elements, function(el) {
       el.innerHTML = '';
     });
 
-    els = document.getElementsByClassName('info');
-    _.each(els, function(el) {
+    elements = document.getElementsByClassName('info');
+    _.each(elements, function(el) {
       el.style.display = 'none';
     });
 
@@ -23,24 +26,22 @@ document.getElementById('code').oninput = function() {
   var result = window.__result = jscritic(this.value);
 
   function test(id, testName, infoPropertyName) {
-    var el = document.getElementById(id);
-    el.innerHTML = (result ? (result[testName] ? 'Yes' : 'No') : '');
+    var element = document.getElementById(id);
+    element.innerHTML = result ? (result[testName] ? 'Yes' : 'No') : '';
 
     if (result && result[testName]) {
-      el.className = el.className.replace(/no/g, '');
-      el.className += ' yes';
-    }
-    else {
-      if (!result) {
-        el.className = el.className.replace(/(yes|no)/, '');
-      }
-      else {
-        el.className = el.className.replace(/yes/g, '');
-        el.className += ' no';
-      }
+      element.className = element.className.replace(/no/g, '');
+      element.className += ' yes';
+    } else if (!result) {
+      element.className = element.className.replace(/(yes|no)/, '');
+    } else {
+      element.className = element.className.replace(/yes/g, '');
+      element.className += ' no';
     }
     var infoEl = document.getElementById(id + '-info');
-    if (!infoEl) return;
+    if (!infoEl) {
+      return;
+    }
 
     infoEl.style.display = 'none';
     infoEl.innerHTML = '';
@@ -49,15 +50,14 @@ document.getElementById('code').oninput = function() {
 
       if (result[infoPropertyName] instanceof Array) {
         infoEl.innerHTML = result[infoPropertyName].join(', ');
-      }
-      else {
+      } else {
         infoEl.innerHTML = String(result[infoPropertyName] || '')
-          .replace(/&/g,'&amp;')
-          .replace(/</g,'&lt;')
-          .replace(/>/g,'&gt;');
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
       }
 
-      infoEl.style.display = (result[infoPropertyName] && String(result[infoPropertyName]))
+      infoEl.style.display = result[infoPropertyName] && String(result[infoPropertyName])
         ? ''
         : 'none';
     }
@@ -72,48 +72,31 @@ document.getElementById('code').oninput = function() {
   test('ie-incompat', 'hasIEIncompat', 'ieIncompats');
 
   var el = document.getElementById('global-vars');
+  var infoElement = '';
   if (result.realGlobals) {
     el.innerHTML = result.realGlobals.length;
 
-    var infoEl = document.getElementById('global-vars-info');
-    infoEl.innerHTML = result.realGlobals.join(', ');
-    infoEl.style.display = (result.realGlobals && String(result.realGlobals)) ? '' : 'none';
+    infoElement = document.getElementById('global-vars-info');
+    infoElement.innerHTML = result.realGlobals.join(', ');
+    infoElement.style.display = result.realGlobals && String(result.realGlobals) ? '' : 'none';
   }
 
   el = document.getElementById('unused-vars');
-  infoEl = document.getElementById('unused-vars-info');
+  infoElement = document.getElementById('unused-vars-info');
 
   el.innerHTML = '';
-  infoEl.innerHTML = '';
-  infoEl.style.display = 'none';
+  infoElement.innerHTML = '';
+  infoElement.style.display = 'none';
 
   if (result.unused && String(result.unused)) {
     el.innerHTML = result.unused.length;
 
-    infoEl.innerHTML = result.unused.join(', ');
-    infoEl.style.display = '';
+    infoElement.innerHTML = result.unused.join(', ');
+    infoElement.style.display = '';
   }
 
   el = document.getElementById('total-size');
   el.innerHTML = (this.value.length / 1024).toFixed(2);
-
-  function uglify(text) {
-    var ast = UglifyJS.parse(text);
-    ast.figure_out_scope();
-
-    var compressor = UglifyJS.Compressor();
-    var compressedAst = ast.transform(compressor);
-
-    compressedAst.figure_out_scope();
-    compressedAst.compute_char_frequency();
-    compressedAst.mangle_names();
-
-    var stream = UglifyJS.OutputStream();
-    compressedAst.print(stream);
-
-    return stream.toString();
-  }
-
 
   el = document.getElementById('min-size');
   el.innerHTML = '';
