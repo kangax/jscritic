@@ -1,4 +1,3 @@
-/* global UglifyJS */
 /* jshint laxbreak:true, laxcomma:true */
 
 function jscritic(content) {
@@ -359,16 +358,15 @@ function jscritic(content) {
   ];
 
   var JSHINT = typeof require === 'function' ? require('jshint').JSHINT : window.JSHINT,
-      uglify = typeof require === 'function' ? require('uglify-js') : window.uglify,
       _ = typeof require === 'function' ? require('underscore') : window._;
 
   JSHINT(content, {
     browser: true,
     es3: true,
     freeze: true,
+    funcscope: true,
     maxerr: 10000,
-    undef: true,
-    funcscope: true
+    undef: true
   });
 
   var result = JSHINT.data();
@@ -514,21 +512,57 @@ function jscritic(content) {
 
 }
 
-function uglify(text) {
-  var ast = UglifyJS.parse(text);
-  ast.figure_out_scope();
+function uglify(text, options) {
+  if (typeof options !== 'object') {
+    options = { };
+  }
+  options.fromString = true;
+  options.output = { inline_script: true };
 
-  var compressor = UglifyJS.Compressor();
-  var compressedAst = ast.transform(compressor);
+  try {
+    // try to get window reference first
+    var __UglifyJS = window.UglifyJS;
 
-  compressedAst.figure_out_scope();
-  compressedAst.compute_char_frequency();
-  compressedAst.mangle_names();
+    if (typeof __UglifyJS === 'undefined' && typeof require === 'function') {
+      __UglifyJS = require('uglify-js');
+    }
 
-  var stream = UglifyJS.OutputStream();
-  compressedAst.print(stream);
+    // noop
+    if (!__UglifyJS) {
+      return text;
+    }
 
-  return stream.toString();
+    if (__UglifyJS.minify) {
+      return __UglifyJS.minify(text, options).code;
+    }
+    else if (__UglifyJS.parse) {
+
+      var ast = __UglifyJS.parse(text);
+      ast.figure_out_scope();
+
+      var compressor = __UglifyJS.Compressor();
+      var compressedAst = ast.transform(compressor);
+
+      compressedAst.figure_out_scope();
+      compressedAst.compute_char_frequency();
+
+      if (options.mangle !== false) {
+        compressedAst.mangle_names();
+      }
+
+      var stream = __UglifyJS.OutputStream(options.output);
+      compressedAst.print(stream);
+
+      return stream.toString();
+    }
+    else {
+      return text;
+    }
+  }
+  catch (err) {
+    console.log(err);
+  }
+  return text;
 }
 
 if (typeof require === 'function' && typeof process !== 'undefined') {
